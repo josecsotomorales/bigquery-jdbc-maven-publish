@@ -23,7 +23,7 @@ shadowJar {
         setPath("META-INF/services")
         include("io.grpc.*")
     }
-    relocate 'com.google', 'com.bigquery-jdbc.google'
+    relocate 'com.google', 'bigquery-jdbc.com.google'
     relocate 'google', 'bigquery-jdbc.google'
 }
 
