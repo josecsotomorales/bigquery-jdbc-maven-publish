@@ -1,14 +1,14 @@
+// Adjust these params
+def mavenUrl = 's3://maven.private.com/release'
+def groupId = 'com.private.bigquery'
+def artifactId = 'bigquery-jdbc'
+def version = '1.2.23.1027'
+
 plugins {
     id 'java'
     id 'maven-publish'
     id 'com.github.johnrengelman.shadow' version '7.1.2'
 }
-
-// Adjust there params
-def mavenUrl = 's3://maven.private.com/release'
-def groupId = 'com.private.bigquery'
-def artifactId = 'bigquery-jdbc'
-def version = '1.2.23.1027'
 
 jar {
     enabled false
