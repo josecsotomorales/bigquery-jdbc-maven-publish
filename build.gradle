@@ -1,28 +1,39 @@
-// Adjust these params
-def mavenUrl = 's3://maven.private.com/release'
-def groupId = 'com.private.bigquery'
-def artifactId = 'bigquery-jdbc'
-def version = '1.2.23.1027'
+// Tweak these three only when you cut a new release
+def mavenUrl   = 's3://maven.private.com/release'
+def groupId    = 'com.private.bigquery'
+def version    = '1.6.3.1004'
 
 plugins {
     id 'java'
     id 'maven-publish'
-    id 'com.github.johnrengelman.shadow' version '7.1.2'
+    id 'com.gradleup.shadow' version '8.3.6'
 }
 
-jar {
-    enabled false
-}
-
-tasks.build.dependsOn tasks.shadowJar
+jar { enabled = false }
+tasks.build.dependsOn shadowJar
 
 shadowJar {
     archiveClassifier = ''
-    zip64 = true
-    mergeServiceFiles {
-        setPath("META-INF/services")
-        include("io.grpc.*")
-    }
+    zip64 true
+
+    // Merge gRPC service‑loader files
+    mergeServiceFiles()
+
+    // Relocate dependencies
+    relocate 'com.google',              'com.shadow.google'
+    relocate 'io.grpc',                 'com.shadow.grpc'
+    relocate 'com.fasterxml.jackson',   'com.shadow.jackson'
+    relocate 'org.apache.commons',      'com.shadow.commons'
+    relocate 'org.apache.http',         'com.shadow.http'
+    relocate 'com.google.gson',         'com.shadow.gson'
+    relocate 'org.joda.time',           'com.shadow.joda'
+    relocate 'com.google.protobuf',     'com.shadow.protobuf'
+    relocate 'io.opencensus',           'com.shadow.opencensus'
+    relocate 'io.perfmark',             'com.shadow.perfmark'
+
+    // Drop signature files & suppress duplicates
+    exclude 'META-INF/*.SF', 'META-INF/*.DSA', 'META-INF/*.RSA'
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
 
 dependencies {
@@ -32,12 +43,10 @@ dependencies {
 publishing {
     publications {
         maven(MavenPublication) {
-            groupId = groupId
-            artifactId = artifactId
-            version = version
-
-            artifact shadowJar
-
+            groupId    = groupId
+            artifactId = 'bigquery-jdbc'
+            version    = version
+            artifact   shadowJar
         }
     }
     repositories {
