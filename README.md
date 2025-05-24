@@ -6,7 +6,7 @@ Google issue tracker: https://issuetracker.google.com/issues/180413368
 
 ### Steps
 
-- Download the jdbc drivers [here](https://storage.googleapis.com/simba-bq-release/jdbc/SimbaJDBCDriverforGoogleBigQuery42_1.2.23.1027.zip)
+- Download the jdbc drivers [here](https://storage.googleapis.com/simba-bq-release/jdbc/SimbaJDBCDriverforGoogleBigQuery42_1.6.3.1004.zip)
 - Unzip all files under `./bigquery-jdbc`
 - Adjust parameters in `build.gradle`
 - Run `./gradlew publish`
